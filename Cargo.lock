@@ -214,7 +214,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "gz-transport"
+name = "gz-transport-rs"
 version = "0.1.0"
 dependencies = [
  "bytes",
