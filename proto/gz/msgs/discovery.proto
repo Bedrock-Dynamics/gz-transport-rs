@@ -1,0 +1,88 @@
+syntax = "proto3";
+package gz.msgs;
+
+import "gz/msgs/header.proto";
+
+// Discovery message for gz-transport protocol
+message Discovery {
+  // Optional header
+  Header header = 1;
+
+  // Protocol version (currently 10)
+  uint32 version = 2;
+
+  // Process UUID
+  string process_uuid = 3;
+
+  // Message type
+  Type type = 4;
+
+  // Relay flags
+  Flags flags = 5;
+
+  // Content (oneof)
+  oneof disc_contents {
+    Subscriber sub = 6;
+    Publisher pub = 7;
+  }
+
+  // Discovery message types
+  enum Type {
+    UNINITIALIZED = 0;
+    ADVERTISE = 1;
+    SUBSCRIBE = 2;
+    UNADVERTISE = 3;
+    HEARTBEAT = 4;
+    BYE = 5;
+    NEW_CONNECTION = 6;
+    END_CONNECTION = 7;
+    SUBSCRIBERS_REQ = 8;
+    SUBSCRIBERS_REP = 9;
+  }
+
+  // Relay flags for network traversal
+  message Flags {
+    bool relay = 1;
+    bool no_relay = 2;
+  }
+
+  // Subscriber info
+  message Subscriber {
+    string topic = 1;
+  }
+
+  // Publisher info
+  message Publisher {
+    string topic = 1;
+    string address = 2;
+    string process_uuid = 3;
+    string node_uuid = 4;
+    Scope scope = 5;
+
+    oneof pub_type {
+      MessagePublisher msg_pub = 6;
+      ServicePublisher srv_pub = 7;
+    }
+
+    enum Scope {
+      PROCESS = 0;
+      HOST = 1;
+      ALL = 2;
+    }
+  }
+
+  // Message publisher details
+  message MessagePublisher {
+    string ctrl = 1;
+    string msg_type = 2;
+    bool throttled = 3;
+    uint64 msgs_per_sec = 4;
+  }
+
+  // Service publisher details
+  message ServicePublisher {
+    string socket_id = 1;
+    string request_type = 2;
+    string response_type = 3;
+  }
+}

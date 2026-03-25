@@ -1,0 +1,55 @@
+[package]
+name = "gz-transport"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.92.0"
+license = "MIT OR Apache-2.0"
+description = "Pure Rust implementation of Gazebo Transport protocol"
+repository = "https://github.com/Bedrock-Dynamics/gz-transport-rs"
+documentation = "https://docs.rs/gz-transport"
+readme = "README.md"
+keywords = ["gazebo", "robotics", "simulation", "ros", "transport"]
+categories = ["science::robotics", "network-programming"]
+
+[features]
+default = ["tokio-runtime"]
+tokio-runtime = ["tokio"]
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["net", "sync", "time", "rt", "macros"], optional = true }
+
+# ZeroMQ (libzmq bindings - required for Gazebo compatibility)
+# zmq-sys 0.12 uses zeromq-src 0.3 which can build from source if system lib not found
+zmq = "0.10"
+
+# Protobuf
+prost = "0.13"
+prost-types = "0.13"
+
+# Networking
+socket2 = { version = "0.5", features = ["all"] }
+bytes = "1"
+
+# Utils
+uuid = { version = "1", features = ["v4"] }
+tracing = "0.1"
+thiserror = "1"
+parking_lot = "0.12"
+hostname = "0.4"
+whoami = "1"
+
+[build-dependencies]
+prost-build = "0.13"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full", "test-util"] }
+tokio-test = "0.4"
+tracing-subscriber = "0.3"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[lints.rust]
+unsafe_code = "deny"

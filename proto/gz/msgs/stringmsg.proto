@@ -1,0 +1,16 @@
+syntax = "proto3";
+package gz.msgs;
+
+import "gz/msgs/header.proto";
+
+// String message
+message StringMsg {
+  Header header = 1;
+  string data = 2;
+}
+
+// Vector of strings
+message StringMsg_V {
+  Header header = 1;
+  repeated string data = 2;
+}

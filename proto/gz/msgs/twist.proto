@@ -1,0 +1,10 @@
+syntax = "proto3";
+package gz.msgs;
+import "gz/msgs/header.proto";
+import "gz/msgs/vector3d.proto";
+
+message Twist {
+  Header header = 1;
+  Vector3d linear = 2;
+  Vector3d angular = 3;
+}
